@@ -20,6 +20,7 @@ import { ReloadIcon } from "@radix-ui/react-icons"
 import { useState } from "react"
 import { CheckCircle, XCircle } from "lucide-react"
 import { useDataStore } from "@/store"
+import { useSWRConfig } from "swr"
 
 const formSchema = z.object({
     nombre: z.string().min(2, { message: "El nombre debe tener al menos 2 caracteres." }),
@@ -35,6 +36,8 @@ const formSchema = z.object({
 export const FormProfesor = () => {
 
     const [loading, setLoading] = useState(false);
+    const { mutate } = useSWRConfig()
+
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -57,6 +60,8 @@ export const FormProfesor = () => {
                 form.setValue("direccion", "");
                 form.setValue("password", "");
                 toast.success("Datos guardados")
+                mutate('/profesor');
+
 
             })
             .catch((e) => {
@@ -75,12 +80,15 @@ export const FormProfesor = () => {
                 setLoading(false);
                 toast.error(e.response.data.detail)
             })
+
         }
       
 
     }
 
     const { data, type } = useDataStore();
+
+    
 
     return (
 
@@ -90,26 +98,7 @@ export const FormProfesor = () => {
                 <CardDescription>Ingrese los datos de los profesores</CardDescription>
             </CardHeader>
             <CardContent>
-                <Toaster
-                    toastOptions={{
-                        success: {
-                            className: "!bg-green-500 !text-white !border-green-600",
-                            iconTheme: {
-                                primary: 'white',
-                                secondary: 'green',
-                            },
-                            icon: <CheckCircle className="h-5 w-5" />,
-                        },
-                        error: {
-                            className: "!bg-red-500 !text-white !border-red-600",
-                            iconTheme: {
-                                primary: 'white',
-                                secondary: 'red',
-                            },
-                            icon: <XCircle className="h-5 w-5" />,
-                        },
-                    }}
-                />
+          
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     })
 
     useEffect(() => {
+      
         checkAuth()
     }, [])
 

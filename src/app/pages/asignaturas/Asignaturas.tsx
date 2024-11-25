@@ -20,6 +20,8 @@ export default function Profesores() {
 
     const { data: total, error: errorTotal, isLoading: isLoadingTotal } = useSWR<{ total_asignaturas: number }>('/asignatura/asignaturas/count', getfetcher);
     
+
+
     return (
         <div className="w-full space-y-4 gap-4">
             <div className="grid lg:grid-cols-3 gap-4">
@@ -87,6 +89,7 @@ const FechtDataAsignatura: React.FC = () => {
     if (isLoading) {
         return <TableSkeleton/>;
     }
+    console.log(data)
 
     return (
         <DataTable data={data ?? []} columns={columns} />

@@ -80,10 +80,9 @@ export default function Profesores() {
 
 const FechtDataProfesores: React.FC = () => {
 
-    const { data, error, isLoading } = useSWR<Profesor[]>('/profesor', getfetcher);
+    const { data, error, isLoading,mutate } = useSWR<Profesor[]>('/profesor', getfetcher);
 
     if (error) {
-        console.log(error);
         return <div>Error al cargar los datos</div>;
     }
     if (isLoading) {

@@ -61,12 +61,12 @@ export function LoginForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-52">
         <Card className="mx-auto max-w-sm">
           <CardHeader>
             <CardTitle className="text-2xl">Login</CardTitle>
             <CardDescription>
-              Enter your email below to login to your account
+              Inicia sesión en tu cuenta para acceder a tus datos personales.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -93,12 +93,7 @@ export function LoginForm() {
                 />
               </div>
               <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <a href="#" className="ml-auto inline-block text-sm underline">
-                    Forgot your password?
-                  </a>
-                </div>
+               
                 <FormField
                   control={form.control}
                   name="password"
@@ -118,6 +113,11 @@ export function LoginForm() {
                     </FormItem>
                   )}
                 />
+                 <div className="flex items-center">
+                  <a href="#" className="ml-auto inline-block text-sm underline">
+                    Has olvidado tu contraseña?
+                  </a>
+                </div>
               </div>
               <Button className="w-full" type="submit" disabled={loading}>
                 {loading ? (
@@ -130,12 +130,12 @@ export function LoginForm() {
                 )}
               </Button>
             </div>
-            <div className="mt-4 text-center text-sm">
+            {/* <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
               <a href="#" className="underline">
                 Sign up
               </a>
-            </div>
+            </div> */}
           </CardContent>
         </Card>
       </form>

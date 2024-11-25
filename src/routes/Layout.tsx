@@ -8,6 +8,7 @@ import {
     Bell,
     BookOpen,
     Bot,
+    CheckCircle,
     ChevronRight,
     ChevronsUpDown,
     Command,
@@ -24,6 +25,7 @@ import {
     Sparkles,
     SquareTerminal,
     Trash2,
+    XCircle,
 } from "lucide-react"
 
 import {
@@ -70,6 +72,8 @@ import {
 import HoverCardBanner from "@/components/banners/HoverCard"
 import { isRouteAuthorized } from "@/config/routes.config"
 import DynamicBreadcrumb from "@/app/pages/DynamicBreadcrumb"
+import { Toaster } from "react-hot-toast"
+import { useDataStore } from "@/store"
 
 const data = {
     user: {
@@ -113,25 +117,31 @@ const data = {
                     title: "Año lectivo",
                     url: "/periodo-lectivo",
                 },
+                {
+                    title: "Areas",
+                    url: "/areas/",
+                },
             ],
         },
         {
-            title: "Models",
+            title: "Planificación",
             url: "#",
             icon: Bot,
             items: [
                 {
-                    title: "Genesis",
-                    url: "#",
+                    title: "Asignar",
+                    url: "/asignar-planificacion",
                 },
                 {
-                    title: "Explorer",
-                    url: "#",
+                    title: "Planificaciones",
+                    url: "/planificaciones-profesores",
                 },
+                
                 {
-                    title: "Quantum",
-                    url: "#",
-                },
+                    title: "Planificaciones Profesor",
+                    url: "/planificaciones-profesores/profesor",
+                },  
+                
             ],
         },
         {
@@ -203,7 +213,7 @@ const data = {
 const filterMenuItemsByRole = (items: typeof data.navMain, userRole: Role) => {
     return items.map(item => ({
         ...item,
-        items: item.items?.filter(subItem => 
+        items: item.items?.filter(subItem =>
             isRouteAuthorized(subItem.url, userRole)
         )
     })).filter(item => item.items && item.items.length > 0)
@@ -217,16 +227,16 @@ export const LayoutPageRouter = ({ children }: LayoutProps) => {
     const [activeTeam, setActiveTeam] = React.useState(data.teams[0])
     const location = useLocation()
     const { user } = useAuth()
+    const { setData, setType } = useDataStore();
 
-    const userRole = user?.role 
+    const userRole = user?.role
 
     if (!userRole) {
         console.error("Lamentablemente no tienes permisos para acceder a esta página");
         return null; // O maneja la ausencia del rol de otra forma
     }
-        
+
     const filteredNavMain = filterMenuItemsByRole(data.navMain, userRole)
-    console.log(filteredNavMain)
 
     return (
         <SidebarProvider>
@@ -276,8 +286,14 @@ export const LayoutPageRouter = ({ children }: LayoutProps) => {
                                             <SidebarMenuSub>
                                                 {item.items?.map((subItem) => (
                                                     <SidebarMenuSubItem key={subItem.title}>
-                                                        <SidebarMenuSubButton 
-                                                            className={`${subItem.url === location.pathname ? 'text-primary bg-green-100' : ''}`} 
+                                                        <SidebarMenuSubButton
+                                                            onClick={() => {
+                                                                if (subItem.url === '/asignar-planificacion') {
+                                                                setType("create")
+                                                                setData({})
+                                                                
+                                                            }}}
+                                                            className={`${subItem.url === location.pathname ? 'text-primary bg-green-100' : ''}`}
                                                             asChild
                                                         >
                                                             <Link to={subItem.url}>
@@ -453,6 +469,26 @@ export const LayoutPageRouter = ({ children }: LayoutProps) => {
                     </div>
                 </header>
                 <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+                    <Toaster
+                        toastOptions={{
+                            success: {
+                                className: "!bg-green-500 !text-white !border-green-600",
+                                iconTheme: {
+                                    primary: 'white',
+                                    secondary: 'green',
+                                },
+                                icon: <CheckCircle className="h-5 w-5" />,
+                            },
+                            error: {
+                                className: "!bg-red-500 !text-white !border-red-600",
+                                iconTheme: {
+                                    primary: 'white',
+                                    secondary: 'red',
+                                },
+                                icon: <XCircle className="h-5 w-5" />,
+                            },
+                        }}
+                    />
                     {children}
                 </div>
             </SidebarInset>

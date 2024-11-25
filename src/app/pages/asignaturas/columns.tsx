@@ -14,6 +14,9 @@ export type Asignatura = {
     codigo: string;
     fecha_creacion: Date;
     descripcion: string;
+    area_id: number;
+    area_nombre: string;
+    curso: string;
 };
 
 export const columns: ColumnDef<Asignatura>[] = [
@@ -29,6 +32,14 @@ export const columns: ColumnDef<Asignatura>[] = [
         accessorKey: "fecha_creacion",
         header: "Fecha de Creacion",
 
+    },
+    {
+        accessorKey: "area_nombre",
+        header: "Area",
+    },
+    {
+        accessorKey: "curso",
+        header: "Curso",
     },
     {
         id: "Acciones",

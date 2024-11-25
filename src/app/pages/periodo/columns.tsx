@@ -1,10 +1,8 @@
 
-import {
-    DropdownMenu, DropdownMenuContent, DropdownMenuItem
-    , DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
+
 import { ColumnDef } from "@tanstack/react-table"
-import { Book, Wrench } from "lucide-react";
+import AccionesPeriodo from "./AccionesPeriodo";
+
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -38,23 +36,7 @@ export const columns: ColumnDef<Periodo>[] = [
         enableHiding: true,
         cell: ({ row }) => {
             return (
-                <DropdownMenu >
-                    <DropdownMenuTrigger >
-                        <Wrench color="#22c55e" />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                        className="w-56 p-2 shadow-md bg-background rounded-box"
-                    >
-                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                        <DropdownMenuItem
-                        // onClick={() => navigator.clipboard.writeText(payment.id)}
-                        >
-                            < Book />Editar
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <AccionesPeriodo data={row.original} />
             )
 
         },

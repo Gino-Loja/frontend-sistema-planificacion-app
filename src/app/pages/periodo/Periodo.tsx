@@ -21,14 +21,14 @@ export default function Profesores() {
     const { data: total, error: errorTotal, isLoading: isLoadingTotal } = useSWR<{ total_periodos: number }>('/periodo/total/count', getfetcher);
     const { data: periodo, error: errorPeriodo, isLoading: isLoadingPeriodo } = useSWR<Periodo>('/periodo/last', getfetcher);
 
-
+    console.log(periodo)
   
 
     const date = periodo ? format(periodo.fecha_inicio, "LLL dd, y", { locale: es }) + " - " + format(periodo.fecha_fin, "LLL dd, y", { locale: es }) : '';
 
     return (
         <div className="w-full space-y-4 gap-4">
-            <div className="grid lg:grid-cols-3 gap-4">
+            <div className="grid lg:grid-cols-4 gap-4">
                 {/* Bar Chart Section */}
                 <div>
                     {
@@ -39,10 +39,10 @@ export default function Profesores() {
                 <div>
                     <Metricas value={'1'} title="Número de períodos por año" descripcion="Cantidad de Periodos al año" />
                 </div>
-                <div className="">
+                <div className="grid lg:col-span-2">
                     {
                         isLoadingPeriodo ? <CardSkeleton /> :
-                            <Metricas size="text-3xl" value={date} title={periodo?.nombre || 'Sin nombre'}  descripcion={periodo?.descripcion || 'Sin descripción'} />
+                            <Metricas size="text-4xl" value={date} title={periodo?.nombre || 'Sin nombre'}  descripcion={periodo?.descripcion || 'Sin descripción'} />
                     }
                 </div>
 
@@ -93,7 +93,7 @@ export default function Profesores() {
 
 const FechtDataPeriodo: React.FC = () => {
 
-    const { data, error, isLoading } = useSWR<Periodo[]>('/periodo/periodo/', getfetcher);
+    const { data, error, isLoading,mutate } = useSWR<Periodo[]>('/periodo/periodo/', getfetcher);
 
 
     if (error) {

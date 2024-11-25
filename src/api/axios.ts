@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 
 // Crear instancia de Axios con configuración predeterminada
 export const AxiosInstance = axios.create({
+  //baseURL: 'https://fastapi.fichafamiliarchambo.site/', // Reemplaza con la URL base de tu API
   baseURL: 'http://localhost:8000/', // Reemplaza con la URL base de tu API
   timeout: 5000, // Tiempo de espera para las solicitudes
   headers: {

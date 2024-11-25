@@ -6,6 +6,10 @@ type DataState<T = any> = {
     type: "create" | "update";
     setType: (type: "create" | "update") => void;
 
+
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
+
 };
 
 export const useDataStore = create<DataState>((set) => ({
@@ -13,4 +17,9 @@ export const useDataStore = create<DataState>((set) => ({
     setData: (data) => set({ data }),
     type: "create",
     setType: (type: "create" | "update") => set({ type }),
+
+    isOpen: false,  // Inicializa el estado del modal como cerrado
+    setIsOpen: (isOpen) => set({ isOpen }),  // Método para abrir o cerrar el modal
 }));
+
+

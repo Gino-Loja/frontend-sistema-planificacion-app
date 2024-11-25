@@ -16,15 +16,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { AxiosInstance } from "@/api/axios"
 import toast, { Toaster } from 'react-hot-toast';
 import { ReloadIcon } from "@radix-ui/react-icons"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { CalendarIcon, CheckCircle, XCircle } from "lucide-react"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
 import React from "react"
 import { DateRange } from "react-day-picker"
-import { addDays, format } from "date-fns"
+import { format } from "date-fns"
 import { es } from 'date-fns/locale';
+import { useDataStore } from "@/store"
+import { useSWRConfig } from "swr"
 
 
 
@@ -38,37 +40,68 @@ const formSchema = z.object({
 
 export const FormPeriodo = () => {
 
+
+
     const [loading, setLoading] = useState(false);
-    const [date, setDate] = React.useState<DateRange | undefined>({
-        from: new Date(2022, 0, 20),
-        to: new Date(2022,3, 20),
-    })
+    const [date, setDate] = React.useState<DateRange | undefined>()
+    const { data, type } = useDataStore();
+    const { mutate } = useSWRConfig()
+
+    useEffect(() => {
+        if (type === "update") {
+            setDate({
+                from: data?.fecha_inicio,
+                to: data?.fecha_fin,
+            })
+        }
+    }, [data, type])
 
 
     const form = useForm<z.infer<typeof formSchema>>({
-
         resolver: zodResolver(formSchema),
 
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
 
-        setLoading(true);
-        AxiosInstance.post('/periodo/create', {...values, fecha_inicio: date?.from, fecha_fin: date?.to
-        })
-            .then(() => {
-                setLoading(false);
-                form.reset();
-                form.setValue("nombre", "");
-                form.setValue("descripcion", "");
 
-                toast.success("Datos guardados")
+        if (type === "create") {
+            setLoading(true);
+            AxiosInstance.post('/periodo/create', {
+                ...values, fecha_inicio: date?.from, fecha_fin: date?.to
+            })
+                .then(() => {
+                    setLoading(false);
+                    form.reset();
+                    form.setValue("nombre", "");
+                    form.setValue("descripcion", "");
+                    mutate('/periodo/periodo/');
+                    toast.success("Datos guardados")
 
+                })
+                .catch((e) => {
+                    setLoading(false);
+                    toast.error(e.response.data.detail)
+                })
+        }
+        else {
+            setLoading(true);
+
+            AxiosInstance.put(`/periodo/periodo/${data.id}`, {
+                ...values, fecha_inicio: date?.from, fecha_fin: date?.to
             })
-            .catch((e) => {
-                setLoading(false);
-                toast.error(e.response.data.detail)
-            })
+                .then(() => {
+                    setLoading(false);
+                    mutate('/periodo/periodo/');
+                    toast.success("Datos guardados")
+                })
+                .catch((e) => {
+                    setLoading(false);
+                    toast.error(e.response.data.detail)
+                })
+
+        }
+
 
         // toast.promise(
         //     AxiosInstance.post('/profesor/create', values)
@@ -122,12 +155,12 @@ export const FormPeriodo = () => {
                         <FormField
                             control={form.control}
                             name="nombre"
-
+                            defaultValue={data?.nombre}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Nombre del periodo</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="nombre" {...field} />
+                                        <Input defaultValue={field.value} placeholder="nombre" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -139,11 +172,13 @@ export const FormPeriodo = () => {
                         <FormField
                             control={form.control}
                             name="descripcion"
+                            defaultValue={data?.descripcion}
+
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Descripción</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="Descripción" {...field} />
+                                        <Input defaultValue={field.value} type="text" placeholder="Descripción" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -186,22 +221,11 @@ export const FormPeriodo = () => {
                                         defaultMonth={date?.from}
                                         selected={date}
                                         onSelect={setDate}
-                                        numberOfMonths={3}
+                                        numberOfMonths={2}
                                     />
                                 </PopoverContent>
                             </Popover>
                         </div>
-
-
-
-
-
-
-
-
-
-
-
 
                         <Button className="w-full" type="submit" disabled={loading}>
                             {loading ? (
@@ -210,7 +234,7 @@ export const FormPeriodo = () => {
                                     Guardando...
                                 </>
                             ) : (
-                                'Guardar'
+                                type === "create" ? 'Guardar' : 'Actualizar'
                             )}
                         </Button>
                     </form>

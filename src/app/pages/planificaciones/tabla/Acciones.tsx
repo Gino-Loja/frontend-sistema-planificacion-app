@@ -4,19 +4,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useDataStore } from "@/store";
 import { useNavigate } from "react-router-dom";
-import { NotebookTabs, UserPen, Wrench, UserX } from "lucide-react";
-import { Profesor } from "./columns";
-import { CustomDialog } from "../Dialog";
+import { NotebookTabs, EllipsisVertical, FilePenLine, FileX2 } from "lucide-react";
+import { Planificaciones } from "./columns";
+import { CustomDialog } from "../../Dialog";
 
 
-export default function Acciones({ data }: { data: Profesor }) {
+export default function Acciones({ data }: { data: Planificaciones }) {
     const { setData, setType } = useDataStore();
     const navigate = useNavigate();
 
     return (
         <DropdownMenu >
             <DropdownMenuTrigger >
-                <Wrench color="#22c55e" />
+                <EllipsisVertical />
+
             </DropdownMenuTrigger>
             <DropdownMenuContent
                 className="w-56 p-2 shadow-md bg-background rounded-box"
@@ -26,23 +27,21 @@ export default function Acciones({ data }: { data: Profesor }) {
 
                     onClick={() => {
                         setData(data)
+                        console.log(data)
                         setType("update")
-
-                        navigate("/profesores/editar");
+                        navigate("/planificaciones-profesores/editar");
                     }
                     }
                 // onClick={() => navigator.clipboard.writeText(payment.id)}
                 >
-                    <UserPen />Editar
+                    <FilePenLine />Editar
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                    <UserX /> <CustomDialog path="/profesor" title={"Eliminar Profesor"} url={`/profesor/${data.id}`} />
+                    <FileX2 /> <CustomDialog path={`/planificacion/search/?query=${data.periodo_id}`} title={"Eliminar Planificacion"} url={`/profesor/${data.id}`} />
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem> <NotebookTabs /> Ver Planificaciones</DropdownMenuItem>
-
-
+                <DropdownMenuItem> <NotebookTabs /> Ver Estado</DropdownMenuItem>
 
             </DropdownMenuContent>
         </DropdownMenu>

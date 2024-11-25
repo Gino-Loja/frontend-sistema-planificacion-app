@@ -41,7 +41,37 @@ export const ROUTE_PERMISSIONS: Record<string, RouteConfig> = {
         path: '/periodo-lectivo/nuevo',
         title: 'Periodo Lectivo',
         roles: ['Vicerrector']
-    }
+    },
+    '/planificaciones-profesores': {
+        path: '/planificaciones-profesores',
+        title: 'Planificaciones Profesores',
+        roles: ['Vicerrector']
+    },
+    '/asignar-planificacion': {
+        path: '/planificacion',
+        title: 'Planificacion',
+        roles: ['Vicerrector']
+    },
+    '/planificaciones-profesores/profesor': {
+        path: '/planificaciones-profesores/profesor',
+        title: 'Planificacion Profesor',
+        roles: ['Vicerrector', ]
+    },
+    '/areas/': {
+        path: '/areas',
+        title: 'Areas',
+        roles: ['Vicerrector']
+    },
+    '/areas/profesor/nuevo': {
+        path: '/areas/profesor/nuevo',
+        title: 'Nuevo Profesor',
+        roles: ['Vicerrector']
+    },
+    '/areas/profesor/editar': {
+        path: '/areas/profesor/editar',
+        title: 'Editar Profesor',
+        roles: ['Vicerrector']
+    },
 }
 
 export const getAuthorizedRoutes = (userRole: Role): RouteConfig[] => {
