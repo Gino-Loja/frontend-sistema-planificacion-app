@@ -41,8 +41,11 @@ export default function Acciones({ data }: { data: Planificaciones }) {
                     <FileX2 /> <CustomDialog path={`/planificacion/search/?query=${data.periodo_id}`} title={"Eliminar Planificacion"} url={`/profesor/${data.id}`} />
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem> <NotebookTabs /> Ver Estado</DropdownMenuItem>
+                <DropdownMenuItem onSelect={()=>{
+                    setData(data)
+                    navigate("/planificaciones-profesores/profesor");
 
+                }}> <NotebookTabs /> Ver Estado</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )

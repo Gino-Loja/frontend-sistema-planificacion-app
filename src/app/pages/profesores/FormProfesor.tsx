@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { AxiosInstance } from "@/api/axios"
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { ReloadIcon } from "@radix-ui/react-icons"
 import { useState } from "react"
 import { CheckCircle, XCircle } from "lucide-react"

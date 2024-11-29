@@ -111,7 +111,10 @@ export const PrivateRoutes = () => {
                 <Route
                     path="/planificaciones-profesores"
                     element={
-                        <RoleRoute roles={['Vicerrector']}>
+                        <RoleRoute roles={['Vicerrector',   
+                            'Director de area', 
+                            'Docente',
+                        ]}>
                             <PlanificacionesProfesores />
                         </RoleRoute>
                     }
@@ -119,7 +122,10 @@ export const PrivateRoutes = () => {
                 <Route
                     path="/planificaciones-profesores/editar"
                     element={
-                        <RoleRoute roles={['Vicerrector']}>
+                        <RoleRoute roles={['Vicerrector',   
+                            'Director de area', 
+                            'Docente',
+                        ]}>
                             <AsignarPlanificacion />
 
                         </RoleRoute>
@@ -128,7 +134,10 @@ export const PrivateRoutes = () => {
                 <Route
                     path="/planificaciones-profesores/profesor"
                     element={
-                        <RoleRoute roles={['Vicerrector']}>
+                        <RoleRoute roles={['Vicerrector',   
+                            'Director de area', 
+                            'Docente',
+                        ]}>
                             <PlanificacionesAsignadoProfesor />
 
                         </RoleRoute>

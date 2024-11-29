@@ -74,6 +74,8 @@ import { isRouteAuthorized } from "@/config/routes.config"
 import DynamicBreadcrumb from "@/app/pages/DynamicBreadcrumb"
 import { Toaster } from "react-hot-toast"
 import { useDataStore } from "@/store"
+import { Worker } from '@react-pdf-viewer/core';
+
 
 const data = {
     user: {
@@ -136,12 +138,12 @@ const data = {
                     title: "Planificaciones",
                     url: "/planificaciones-profesores",
                 },
-                
+
                 {
                     title: "Planificaciones Profesor",
                     url: "/planificaciones-profesores/profesor",
-                },  
-                
+                },
+
             ],
         },
         {
@@ -289,10 +291,11 @@ export const LayoutPageRouter = ({ children }: LayoutProps) => {
                                                         <SidebarMenuSubButton
                                                             onClick={() => {
                                                                 if (subItem.url === '/asignar-planificacion') {
-                                                                setType("create")
-                                                                setData({})
-                                                                
-                                                            }}}
+                                                                    setType("create")
+                                                                    setData({})
+
+                                                                }
+                                                            }}
                                                             className={`${subItem.url === location.pathname ? 'text-primary bg-green-100' : ''}`}
                                                             asChild
                                                         >
@@ -489,7 +492,9 @@ export const LayoutPageRouter = ({ children }: LayoutProps) => {
                             },
                         }}
                     />
-                    {children}
+                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                        {children}
+                    </Worker>
                 </div>
             </SidebarInset>
         </SidebarProvider>

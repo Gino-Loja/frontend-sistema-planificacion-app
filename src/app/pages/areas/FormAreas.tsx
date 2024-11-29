@@ -245,8 +245,6 @@ const FormAsignatura = () => {
         <div className="border-2 border-gray-300 rounded-md p-4 w-full mt-2">
             <Form  {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-
-
                     <AsyncSelectField
                         select={selectedArea}
                         setSelect={setSelectedArea}

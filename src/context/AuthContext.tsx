@@ -15,6 +15,10 @@ interface TokenResponse {
 
 export const AuthContext = createContext<AuthContextType | null>(null)
 
+
+//const remote = "https://fastapi.fichafamiliarchambo.site/"
+const remote = "http://localhost:8000"
+
 export const AuthProvider = ({ children }: PropsWithChildren) => {
     const [auth, setAuth] = useState<AuthState>({
         status: 'checking',
@@ -38,7 +42,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         }
 
         try {
-            const response = await fetch('http://localhost:8000/auth/users/me/', {
+            const response = await fetch(remote+'/auth/users/me/', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -74,7 +78,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
             formData.append('password', password)
 
             // Get token
-            const tokenResponse = await fetch('http://localhost:8000/auth/token', {
+            const tokenResponse = await fetch(remote+'/auth/token/', {
                 method: 'POST',
                 body: formData
             })
@@ -89,7 +93,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
             localStorage.setItem('token', access_token)
 
             // Get user data
-            const userResponse = await fetch('http://localhost:8000/auth/users/me/', {
+            const userResponse = await fetch(remote+'/auth/users/me/', {
                 headers: {
                     'Authorization': `Bearer ${access_token}`
                 }

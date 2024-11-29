@@ -8,7 +8,6 @@ import { useDataStore } from "@/store";
 
 export default function PlanificacionesProfesores() {
     const { setData, setType } = useDataStore();
-
     return (
 
         <Card>
