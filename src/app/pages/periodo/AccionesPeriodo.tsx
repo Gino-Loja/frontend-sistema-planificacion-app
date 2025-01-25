@@ -26,7 +26,7 @@ export default function AccionesPeriodo({ data }: { data: Periodo }) {
                     setData(data)
                     setType("update")
 
-                    navigate("/periodo-lectivo/editar");
+                    navigate("/dashboard-admin/periodo-lectivo/editar");
                 }
                 }
             // onClick={() => navigator.clipboard.writeText(payment.id)}

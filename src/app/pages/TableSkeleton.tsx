@@ -1,3 +1,4 @@
+import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export const TableSkeleton: React.FC = () => {
@@ -7,13 +8,13 @@ export const TableSkeleton: React.FC = () => {
                 <TableHeader>
                     <TableRow>
                         <TableHead>
-                            <div className="h-4 bg-gray-300 rounded w-1/3"></div>
+                            <Skeleton className="h-4  rounded w-1/3"></Skeleton>
                         </TableHead>
                         <TableHead>
-                            <div className="h-4 bg-gray-300 rounded w-1/4"></div>
+                            <Skeleton className="h-4  rounded w-1/4"></Skeleton>
                         </TableHead>
                         <TableHead>
-                            <div className="h-4 bg-gray-300 rounded w-1/4"></div>
+                            <Skeleton className="h-4  rounded w-1/4"></Skeleton>
                         </TableHead>
                     </TableRow>
                 </TableHeader>
@@ -21,13 +22,13 @@ export const TableSkeleton: React.FC = () => {
                     {[...Array(5)].map((_, index) => (
                         <TableRow key={index}>
                             <TableCell>
-                                <div className="h-6 bg-gray-200 rounded w-full"></div>
+                                <Skeleton className="h-6  rounded w-full"></Skeleton>
                             </TableCell>
                             <TableCell>
-                                <div className="h-6 bg-gray-200 rounded w-full"></div>
+                                <Skeleton className="h-6  rounded w-full"></Skeleton>
                             </TableCell>
                             <TableCell>
-                                <div className="h-6 bg-gray-200 rounded w-full"></div>
+                                <Skeleton className="h-6  rounded w-full"></Skeleton>
                             </TableCell>
                         </TableRow>
                     ))}

@@ -13,6 +13,7 @@ import { UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
 import CardSkeleton from "../CardSkeleton";
 import { TableSkeleton } from "../TableSkeleton";
+import { useDataStore } from "@/store";
 
 
 
@@ -20,13 +21,14 @@ export default function Profesores() {
 
     const { data: total, error: errorTotal, isLoading: isLoadingTotal } = useSWR<{ total: number }>('/profesor/count/total', getfetcher);
 
+    const { setData, setType } = useDataStore();
 
 
     return (
         <div className="w-full space-y-4 gap-4">
-            <div className="grid lg:grid-cols-3 gap-4">
+            <div className="grid grid-rows-1 grid-cols-2 gap-4">
                 {/* Bar Chart Section */}
-                <div className="lg:col-span-2">
+                <div className="">
                     <BarcharProfesores />
                 </div>
 
@@ -51,8 +53,14 @@ export default function Profesores() {
                         </div>
                         <div>
                             <Button asChild size={'sm'} variant="default" className="ml-auto">
-                                <Link to={'/profesores/nuevo'} className="ml-2" >
-                                <UserPlus /> Nuevo Docente
+                                <Link onClick={
+                                    () => {
+                                        setType("create")
+                                        setData({})
+                                    }
+
+                                } to={'/dashboard-admin/profesores/nuevo'} className="ml-2" >
+                                    <UserPlus /> Nuevo Docente
 
                                 </Link>
 
@@ -80,13 +88,13 @@ export default function Profesores() {
 
 const FechtDataProfesores: React.FC = () => {
 
-    const { data, error, isLoading,mutate } = useSWR<Profesor[]>('/profesor', getfetcher);
+    const { data, error, isLoading, mutate } = useSWR<Profesor[]>('/profesor', getfetcher);
 
     if (error) {
         return <div>Error al cargar los datos</div>;
     }
     if (isLoading) {
-        return <TableSkeleton/>;
+        return <TableSkeleton />;
     }
 
     return (

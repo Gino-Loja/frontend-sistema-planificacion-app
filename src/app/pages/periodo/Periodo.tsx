@@ -8,23 +8,23 @@ import { DataTable } from "../data-table";
 import { getfetcher } from "@/api/axios";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { UserPlus } from "lucide-react";
+import { CalendarRange, UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
-import Metricas from "../Metricas";
 import { format } from "date-fns";
 import { es } from 'date-fns/locale';
 import CardSkeleton from "../CardSkeleton";
 import { TableSkeleton } from "../TableSkeleton";
+import { useDataStore } from "@/store";
 
 export default function Profesores() {
 
     const { data: total, error: errorTotal, isLoading: isLoadingTotal } = useSWR<{ total_periodos: number }>('/periodo/total/count', getfetcher);
     const { data: periodo, error: errorPeriodo, isLoading: isLoadingPeriodo } = useSWR<Periodo>('/periodo/last', getfetcher);
 
-    console.log(periodo)
-  
+
 
     const date = periodo ? format(periodo.fecha_inicio, "LLL dd, y", { locale: es }) + " - " + format(periodo.fecha_fin, "LLL dd, y", { locale: es }) : '';
+    const { setData, setType } = useDataStore();
 
     return (
         <div className="w-full space-y-4 gap-4">
@@ -32,17 +32,48 @@ export default function Profesores() {
                 {/* Bar Chart Section */}
                 <div>
                     {
-                        isLoadingTotal ? <CardSkeleton />:
-                            <Metricas value={total?.total_periodos.toString() || "0"} title="Periodo lectivos" descripcion="Cantidad de Periodos" />
+                        isLoadingTotal ? <CardSkeleton /> :
+
+                        <Card className="hover:shadow-lg transition-shadow">
+                        <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                            <CardTitle className="text-sm font-medium">Periodo lectivos</CardTitle>
+                            <CalendarRange className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-xl font-bold">{total?.total_periodos.toString() || "0"}</div>
+                            <p className="text-xs text-muted-foreground">Cantidad de Periodos</p>
+                        </CardContent>
+                    </Card>
                     }
                 </div>
                 <div>
-                    <Metricas value={'1'} title="Número de períodos por año" descripcion="Cantidad de Periodos al año" />
+
+                    <Card className="hover:shadow-lg transition-shadow">
+                        <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                            <CardTitle className="text-sm font-medium">Número de períodos por año</CardTitle>
+                            <CalendarRange className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-xl font-bold">{1}</div>
+                            <p className="text-xs text-muted-foreground">Cantidad de Periodos al año</p>
+                        </CardContent>
+                    </Card>
                 </div>
                 <div className="grid lg:col-span-2">
                     {
                         isLoadingPeriodo ? <CardSkeleton /> :
-                            <Metricas size="text-4xl" value={date} title={periodo?.nombre || 'Sin nombre'}  descripcion={periodo?.descripcion || 'Sin descripción'} />
+
+                            <Card className="hover:shadow-lg transition-shadow">
+                                <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                                    <CardTitle className="text-sm font-medium">Periodo actual</CardTitle>
+                                    <CalendarRange className="h-4 w-4 text-muted-foreground" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-xl font-bold">{date}</div>
+                                    <p className="text-xs text-muted-foreground">Fecha inicio - Fecha fin</p>
+                                </CardContent>
+                            </Card>
+                        // <Metricas size="text-4xl" value={date} title={periodo?.nombre || 'Sin nombre'}  descripcion={periodo?.descripcion || 'Sin descripción'} />
                     }
                 </div>
 
@@ -60,12 +91,17 @@ export default function Profesores() {
                     <CardHeader className="flex flex-row align-center gap-4">
                         <div>
                             <CardTitle>Periodo lectivo</CardTitle>
-                            <CardDescription>Lista de los periodos lectivos</CardDescription>
+                            <CardDescription>Lista de periodos lectivos</CardDescription>
 
                         </div>
                         <div>
                             <Button asChild size={'sm'} variant="default" className="ml-auto">
-                                <Link to={'/periodo-lectivo/nuevo'} className="ml-2" >
+                                <Link onClick={
+                                    () => {
+                                         setType("create")
+                                        setData({})
+                                    }
+                                } to={'/dashboard-admin/periodo-lectivo/nuevo'} className="ml-2" >
                                     <UserPlus /> Nuevo Periodo
                                 </Link>
 
@@ -93,7 +129,7 @@ export default function Profesores() {
 
 const FechtDataPeriodo: React.FC = () => {
 
-    const { data, error, isLoading,mutate } = useSWR<Periodo[]>('/periodo/periodo/', getfetcher);
+    const { data, error, isLoading, mutate } = useSWR<Periodo[]>('/periodo/periodo/', getfetcher);
 
 
     if (error) {
@@ -101,7 +137,7 @@ const FechtDataPeriodo: React.FC = () => {
         return <div>Error al cargar los datos</div>;
     }
     if (isLoading) {
-        return <TableSkeleton/>;
+        return <TableSkeleton />;
     }
 
     return (

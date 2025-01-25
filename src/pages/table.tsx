@@ -29,7 +29,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { DataTablePagination } from "./DataTablePagination"
+import { DataTablePagination } from "@/app/pages/DataTablePagination"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]

@@ -28,7 +28,7 @@ export default function Acciones({ data }: { data: Profesor }) {
                         setData(data)
                         setType("update")
 
-                        navigate("/profesores/editar");
+                        navigate("/dashboard-admin/profesores/editar");
                     }
                     }
                 // onClick={() => navigator.clipboard.writeText(payment.id)}
@@ -37,10 +37,9 @@ export default function Acciones({ data }: { data: Profesor }) {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                    <UserX /> <CustomDialog path="/profesor" title={"Eliminar Profesor"} url={`/profesor/${data.id}`} />
+                    <UserX /> <CustomDialog path="/profesor" title={" Profesor"} url={`/profesor/${data.id}`} />
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem> <NotebookTabs /> Ver Planificaciones</DropdownMenuItem>
 
 
 

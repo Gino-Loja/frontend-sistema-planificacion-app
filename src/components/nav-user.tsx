@@ -90,7 +90,7 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <BadgeCheck />
-                Account
+                {user.name}
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCard />

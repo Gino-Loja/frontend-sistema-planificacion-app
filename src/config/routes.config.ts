@@ -1,86 +1,160 @@
-import { Role } from '@/types/auth.types'
+import { Role } from '@/types/auth.types';
+import DashboardPrincipal from '@/app/pages/dashboard/DashboardPrincipal';
+import Profesores from '@/app/pages/profesores/Profesores';
+import Asignaturas from '@/app/pages/asignaturas/Asignaturas';
+import Periodo from '@/app/pages/periodo/Periodo';
+import AsignarPlanificacion from '@/app/pages/planificaciones/AsignarPlanificacion';
+import PlanificacionesProfesores from '@/app/pages/planificaciones/Docentes/Planificaciones';
+import PlanificacionesAsignadoProfesor from '@/app/pages/planificaciones/asignado/PlanificacionesProfesor';
+import AsignarProfesorArea from '@/app/pages/areas/areas-profesor/AsignarProfesorArea';
+import MisPlanificaciones from '@/app/pages/profesores-planificaciones/MisPlanificaciones';
+import DashboardAdmin from '@/app/pages/dashboard/dasboardAdmin';
+import { FormProfesor } from '@/app/pages/profesores/FormProfesor';
+import { FormAsignatura } from '@/app/pages/asignaturas/FormAsignatura';
+import { FormPeriodo } from '@/app/pages/periodo/FormPeriodo';
 
 interface RouteConfig {
-    path: string
-    title: string
-    roles: Role[]
+    path: string;
+    title: string;
+    roles: Role[];
+    component: React.ComponentType;
 }
 
-export const ROUTE_PERMISSIONS: Record<string, RouteConfig> = {
-    '/dashboard': {
+export const ROUTES: RouteConfig[] = [
+    {
         path: '/dashboard',
-        title: 'Dashboard',
-        roles: ['Vicerrector']
+        title: 'Dashboard Principal',
+        roles: ['Vicerrector', 'Director de area', 'Docente'],
+        component: DashboardPrincipal,
     },
-    '/profesores': {
-        path: '/profesores',
+    {
+        path: '/dashboard-admin',
+        title: 'Dashboard Admin',
+        roles: ['Vicerrector', 'Director de area'],
+        component: DashboardAdmin,
+    },
+    {
+        path: '/dashboard-admin/profesores',
         title: 'Profesores',
-        roles: ['Vicerrector']
+        roles: ['Vicerrector'],
+        component: Profesores,
     },
-    '/profesores/nuevo': {
-        path: '/profesores/nuevo',
+    {
+        path: '/dashboard-admin/profesores/nuevo',
         title: 'Nuevo Profesor',
-        roles: ['Vicerrector']
+        roles: ['Vicerrector'],
+        component: FormProfesor,
     },
-    '/asignaturas': {
-        path: '/asignaturas',
-        title: 'Asignaturas',
-        roles: ['Vicerrector', 'Docente']
-    },
-    '/asignaturas/nuevo': {
-        path: '/asignaturas/nuevo',
-        title: 'Asignaturas',
-        roles: ['Vicerrector']
-    },
-    '/periodo-lectivo': {
-        path: '/periodo-lectivo',
-        title: 'Periodo Lectivo',
-        roles: ['Vicerrector']
-    },
-    '/periodo-lectivo/nuevo': {
-        path: '/periodo-lectivo/nuevo',
-        title: 'Periodo Lectivo',
-        roles: ['Vicerrector']
-    },
-    '/planificaciones-profesores': {
-        path: '/planificaciones-profesores',
-        title: 'Planificaciones Profesores',
-        roles: ['Vicerrector']
-    },
-    '/asignar-planificacion': {
-        path: '/planificacion',
-        title: 'Planificacion',
-        roles: ['Vicerrector']
-    },
-    '/planificaciones-profesores/profesor': {
-        path: '/planificaciones-profesores/profesor',
-        title: 'Planificacion Profesor',
-        roles: ['Vicerrector', ]
-    },
-    '/areas/': {
-        path: '/areas',
-        title: 'Areas',
-        roles: ['Vicerrector']
-    },
-    '/areas/profesor/nuevo': {
-        path: '/areas/profesor/nuevo',
-        title: 'Nuevo Profesor',
-        roles: ['Vicerrector']
-    },
-    '/areas/profesor/editar': {
-        path: '/areas/profesor/editar',
+    {
+        path: '/dashboard-admin/profesores/editar',
         title: 'Editar Profesor',
-        roles: ['Vicerrector']
+        roles: ['Vicerrector'],
+        component: FormProfesor,
     },
-}
+    {
+        path: '/dashboard-admin/asignaturas',
+        title: 'Asignaturas',
+        roles: ['Vicerrector'],
+        component: Asignaturas,
+    },
+    {
+        path: '/dashboard-admin/asignaturas/nuevo',
+        title: 'Nueva Asignatura',
+        roles: ['Vicerrector'],
+        component: FormAsignatura,
+    },
+    {
+        path: '/dashboard-admin/asignaturas/editar',
+        title: 'Editar Asignatura',
+        roles: ['Vicerrector'],
+        component: FormAsignatura,
+    },
+    {
+        path: '/dashboard-admin/periodo-lectivo',
+        title: 'Periodo Lectivo',
+        roles: ['Vicerrector'],
+        component: Periodo,
+    },
+    {
+        path: '/dashboard-admin/periodo-lectivo/nuevo',
+        title: 'Nuevo Periodo Lectivo',
+        roles: ['Vicerrector'],
+        component: FormPeriodo,
+    },
+    {
+        path: '/dashboard-admin/periodo-lectivo/editar',
+        title: 'Editar Periodo Lectivo',
+        roles: ['Vicerrector'],
+        component: FormPeriodo,
+    },
+    {
+        path: '/dashboard-admin/asignar-planificacion',
+        title: 'Asignar Planificación',
+        roles: ['Vicerrector',  'Director de area'],
+        component: AsignarPlanificacion,
+    },
+    {
+        path: '/dashboard-admin/planificaciones-profesores',
+        title: 'Planificaciones Profesores',
+        roles: ['Vicerrector', 'Director de area'],
+        component: PlanificacionesProfesores,
+    },
+    {
+        path: '/dashboard-admin/planificaciones-profesores/profesor',
+        title: 'Planificaciones Profesor',
+        roles: ['Vicerrector', 'Director de area', 'Docente'],
+        component: PlanificacionesAsignadoProfesor,
+    },
+    {
+        path: '/dashboard-admin/planificaciones-profesores/editar',
+        title: 'Planificaciones Profesor',
+        roles: ['Vicerrector',],
+        component: AsignarPlanificacion,
+    },
+    {
+        path: '/dashboard-admin/planificaciones-profesores/eliminar',
+        title: 'Planificaciones Profesor',
+        roles: ['Vicerrector',],
+        component: AsignarPlanificacion,
+    },
+    
+    {
+        path: '/dashboard/mis-planificaciones',
+        title: 'Mis Planificaciones',
+        roles: ['Vicerrector', 'Director de area', 'Docente'],
+        component: MisPlanificaciones,
+    },
+    {
+        path: '/dashboard/mis-planificaciones/profesor',
+        title: 'Planificaciones Profesor',
+        roles: ['Vicerrector', 'Director de area', 'Docente'],
+        component: PlanificacionesAsignadoProfesor,
+    },
+    {
+        path: '/dashboard-admin/areas',
+        title: 'Areas',
+        roles: ['Vicerrector'],
+        component: AsignarProfesorArea,
+    },
+    {
+        path: '/dashboard-admin/areas/profesor/nuevo',
+        title: 'Nuevo Profesor en Area',
+        roles: ['Vicerrector'],
+        component: AsignarProfesorArea,
+    },
+    {
+        path: '/dashboard-admin/areas/profesor/editar',
+        title: 'Editar Profesor en Area',
+        roles: ['Vicerrector'],
+        component: AsignarProfesorArea,
+    },
+];
 
 export const getAuthorizedRoutes = (userRole: Role): RouteConfig[] => {
-    return Object.values(ROUTE_PERMISSIONS).filter(route => 
-        route.roles.includes(userRole)
-    )
-}
+    return ROUTES.filter(route => route.roles.includes(userRole));
+};
 
 export const isRouteAuthorized = (path: string, userRole: Role): boolean => {
-    const route = ROUTE_PERMISSIONS[path]
-    return route ? route.roles.includes(userRole) : false
-}
+    const route = ROUTES.find(route => route.path === path);
+    return route ? route.roles.includes(userRole) : false;
+};

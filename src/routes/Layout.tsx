@@ -11,6 +11,7 @@ import {
     CheckCircle,
     ChevronRight,
     ChevronsUpDown,
+    CircleUser,
     Command,
     CreditCard,
     Folder,
@@ -58,7 +59,6 @@ import {
     SidebarHeader,
     SidebarInset,
     SidebarMenu,
-    SidebarMenuAction,
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarMenuSub,
@@ -74,124 +74,76 @@ import { isRouteAuthorized } from "@/config/routes.config"
 import DynamicBreadcrumb from "@/app/pages/DynamicBreadcrumb"
 import { Toaster } from "react-hot-toast"
 import { useDataStore } from "@/store"
-import { Worker } from '@react-pdf-viewer/core';
+
 
 
 const data = {
     user: {
         name: "shadcn",
-        email: "m@example.com",
+        email: "m@example.com22",
         avatar: "/avatars/shadcn.jpg",
     },
     teams: [
         {
             name: "Acme Inc",
-            logo: GalleryVerticalEnd,
+            logo: '/remove-fondo-uefo.png',
             plan: "Enterprise",
-        },
-        {
-            name: "Acme Corp.",
-            logo: AudioWaveform,
-            plan: "Startup",
-        },
-        {
-            name: "Evil Corp.",
-            logo: Command,
-            plan: "Free",
-        },
+        }
     ],
     navMain: [
         {
             title: "Administracion",
             url: "#",
-            icon: SquareTerminal,
+            icon: '/administrador.svg',
             isActive: true,
             items: [
                 {
                     title: "Profesores",
-                    url: "/profesores",
+                    url: "/dashboard-admin/profesores",
                 },
                 {
                     title: "Asignaturas",
-                    url: "/asignaturas",
+                    url: "/dashboard-admin/asignaturas",
                 },
                 {
                     title: "Año lectivo",
-                    url: "/periodo-lectivo",
+                    url: "/dashboard-admin/periodo-lectivo",
                 },
                 {
                     title: "Areas",
-                    url: "/areas/",
+                    url: "/dashboard-admin/areas",
                 },
             ],
         },
         {
             title: "Planificación",
             url: "#",
-            icon: Bot,
+            icon: '/planificacion.svg',
             items: [
                 {
                     title: "Asignar",
-                    url: "/asignar-planificacion",
+                    url: "/dashboard-admin/asignar-planificacion",
                 },
                 {
                     title: "Planificaciones",
-                    url: "/planificaciones-profesores",
+                    url: "/dashboard-admin/planificaciones-profesores",
                 },
 
+                // {
+                //     title: "Planificaciones Profesor",
+                //     url: "/planificaciones-profesores/profesor",
+                // },
+
                 {
-                    title: "Planificaciones Profesor",
-                    url: "/planificaciones-profesores/profesor",
+                    title: "Mis Planificaciones",
+                    url: "/dashboard/mis-planificaciones",
                 },
 
             ],
         },
-        {
-            title: "Documentation",
-            url: "#",
-            icon: BookOpen,
-            items: [
-                {
-                    title: "Introduction",
-                    url: "#",
-                },
-                {
-                    title: "Get Started",
-                    url: "#",
-                },
-                {
-                    title: "Tutorials",
-                    url: "#",
-                },
-                {
-                    title: "Changelog",
-                    url: "#",
-                },
-            ],
-        },
-        {
-            title: "Settings",
-            url: "#",
-            icon: Settings2,
-            items: [
-                {
-                    title: "General",
-                    url: "#",
-                },
-                {
-                    title: "Team",
-                    url: "#",
-                },
-                {
-                    title: "Billing",
-                    url: "#",
-                },
-                {
-                    title: "Limits",
-                    url: "#",
-                },
-            ],
-        },
+        
+
+
     ],
     projects: [
         {
@@ -225,20 +177,27 @@ interface LayoutProps {
     children: React.ReactNode;
 }
 
+
 export const LayoutPageRouter = ({ children }: LayoutProps) => {
     const [activeTeam, setActiveTeam] = React.useState(data.teams[0])
     const location = useLocation()
-    const { user } = useAuth()
+    const { user, logout } = useAuth()
     const { setData, setType } = useDataStore();
 
-    const userRole = user?.role
 
+    const userRole = user?.role
     if (!userRole) {
         console.error("Lamentablemente no tienes permisos para acceder a esta página");
         return null; // O maneja la ausencia del rol de otra forma
     }
 
     const filteredNavMain = filterMenuItemsByRole(data.navMain, userRole)
+
+    const getInitials = (name: string) => {
+        const names = name.split(' ')
+        if (names.length === 1) return names[0].charAt(0).toUpperCase()
+        return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase()
+    }
 
     return (
         <SidebarProvider>
@@ -252,8 +211,8 @@ export const LayoutPageRouter = ({ children }: LayoutProps) => {
                                         size="lg"
                                         className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                                     >
-                                        <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                            <activeTeam.logo className="size-4" />
+                                        <div className="flex aspect-square size-12 items-center justify-center rounded-lg  text-sidebar-primary-foreground">
+                                            <img src={activeTeam.logo} alt="logo" className="size-12" />
                                         </div>
                                         <div className="grid flex-1 text-left text-sm leading-tight">
                                             <HoverCardBanner />
@@ -267,7 +226,7 @@ export const LayoutPageRouter = ({ children }: LayoutProps) => {
                 </SidebarHeader>
                 <SidebarContent>
                     <SidebarGroup>
-                        <SidebarGroupLabel>Platform</SidebarGroupLabel>
+                        <SidebarGroupLabel>Plataforma</SidebarGroupLabel>
                         <SidebarMenu>
                             {filteredNavMain.map((item) => (
                                 <Collapsible
@@ -279,7 +238,7 @@ export const LayoutPageRouter = ({ children }: LayoutProps) => {
                                     <SidebarMenuItem>
                                         <CollapsibleTrigger asChild>
                                             <SidebarMenuButton tooltip={item.title}>
-                                                {item.icon && <item.icon />}
+                                                <img src={item.icon} alt={item.title} className="w-6 h-6" />
                                                 <span>{item.title}</span>
                                                 <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                                             </SidebarMenuButton>
@@ -290,9 +249,9 @@ export const LayoutPageRouter = ({ children }: LayoutProps) => {
                                                     <SidebarMenuSubItem key={subItem.title}>
                                                         <SidebarMenuSubButton
                                                             onClick={() => {
-                                                                if (subItem.url === '/asignar-planificacion') {
+                                                                if (subItem.url === '/dashboard-admin/asignar-planificacion') {
                                                                     setType("create")
-                                                                    setData({})
+                                                                    setData(null)
 
                                                                 }
                                                             }}
@@ -312,7 +271,7 @@ export const LayoutPageRouter = ({ children }: LayoutProps) => {
                             ))}
                         </SidebarMenu>
                     </SidebarGroup>
-                    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+                    {/* <SidebarGroup className="group-data-[collapsible=icon]:hidden">
                         <SidebarGroupLabel>Projects</SidebarGroupLabel>
                         <SidebarMenu>
                             {data.projects.map((item) => (
@@ -359,7 +318,7 @@ export const LayoutPageRouter = ({ children }: LayoutProps) => {
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                         </SidebarMenu>
-                    </SidebarGroup>
+                    </SidebarGroup> */}
                 </SidebarContent>
                 <SidebarFooter>
                     <SidebarMenu>
@@ -371,18 +330,15 @@ export const LayoutPageRouter = ({ children }: LayoutProps) => {
                                         className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                                     >
                                         <Avatar className="h-8 w-8 rounded-lg">
-                                            <AvatarImage
-                                                src={data.user.avatar}
-                                                alt={data.user.name}
-                                            />
-                                            <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+
+                                            <AvatarFallback className="rounded-lg">{getInitials(user.name)}</AvatarFallback>
                                         </Avatar>
                                         <div className="grid flex-1 text-left text-sm leading-tight">
                                             <span className="truncate font-semibold">
-                                                {data.user.name}
+                                                {user.name}
                                             </span>
                                             <span className="truncate text-xs">
-                                                {data.user.email}
+                                                {user.email}
                                             </span>
                                         </div>
                                         <ChevronsUpDown className="ml-auto size-4" />
@@ -397,50 +353,36 @@ export const LayoutPageRouter = ({ children }: LayoutProps) => {
                                     <DropdownMenuLabel className="p-0 font-normal">
                                         <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                                             <Avatar className="h-8 w-8 rounded-lg">
-                                                <AvatarImage
-                                                    src={data.user.avatar}
-                                                    alt={data.user.name}
-                                                />
                                                 <AvatarFallback className="rounded-lg">
-                                                    CN
+                                                    {getInitials(user.name)}
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div className="grid flex-1 text-left text-sm leading-tight">
                                                 <span className="truncate font-semibold">
-                                                    {data.user.name}
+                                                    {user.name}
                                                 </span>
                                                 <span className="truncate text-xs">
-                                                    {data.user.email}
+                                                    {user.email}
                                                 </span>
                                             </div>
                                         </div>
                                     </DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuGroup>
-                                        <DropdownMenuItem>
-                                            <Sparkles />
-                                            Upgrade to Pro
-                                        </DropdownMenuItem>
-                                    </DropdownMenuGroup>
+
                                     <DropdownMenuSeparator />
                                     <DropdownMenuGroup>
                                         <DropdownMenuItem>
                                             <BadgeCheck />
-                                            Account
+                                            {user.role}
                                         </DropdownMenuItem>
                                         <DropdownMenuItem>
-                                            <CreditCard />
-                                            Billing
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem>
-                                            <Bell />
-                                            Notifications
+                                            <CircleUser />
+                                            {user.name}
                                         </DropdownMenuItem>
                                     </DropdownMenuGroup>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem>
+                                    <DropdownMenuItem onSelect={logout}>
                                         <LogOut />
-                                        Log out
+                                        Salir
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
@@ -492,9 +434,7 @@ export const LayoutPageRouter = ({ children }: LayoutProps) => {
                             },
                         }}
                     />
-                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-                        {children}
-                    </Worker>
+                    {children}
                 </div>
             </SidebarInset>
         </SidebarProvider>

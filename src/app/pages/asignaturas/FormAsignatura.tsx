@@ -48,7 +48,7 @@ interface AsyncSelectFieldProps {
 
 
 export const FormAsignatura = () => {
-    const { data: storeData, type } = useDataStore();
+    const { data: storeData, type, setData } = useDataStore();
 
     const [loading, setLoading] = useState(false);
     const [selectedArea, setSelectedArea] = useState<SelectOption | null>(null);
@@ -80,6 +80,7 @@ export const FormAsignatura = () => {
         }
     };
 
+
     React.useEffect(() => {
         const loadInitialArea = async () => {
             setSelectedArea({
@@ -96,9 +97,12 @@ export const FormAsignatura = () => {
 
 
     function onSubmit(values: z.infer<typeof formSchema>) {
+        
 
         setLoading(true);
-        AxiosInstance.post('/asignatura/create', values)
+
+        if (type == "create"){
+            AxiosInstance.post('/asignatura/create', values)
             .then(() => {
                 setLoading(false);
                 form.reset();
@@ -113,6 +117,24 @@ export const FormAsignatura = () => {
                 setLoading(false);
                 toast.error(e.response.data.detail)
             })
+        }else{
+            AxiosInstance.put(`/asignatura/${storeData.id}`, values)
+            .then(() => {
+                setLoading(false);
+                form.reset();
+                form.setValue("nombre", "");
+                form.setValue("codigo", "");
+                form.setValue("descripcion", "");
+
+                toast.success("Datos Actualizados")
+
+            })
+            .catch((e) => {
+                setLoading(false);
+                toast.error(e.response.data.detail)
+            })
+        }
+        
 
         // toast.promise(
         //     AxiosInstance.post('/profesor/create', values)
@@ -181,7 +203,7 @@ export const FormAsignatura = () => {
 
     return (
 
-        <Card className="mx-auto w-1/2">
+        <Card className="mx-auto w-min">
             <CardHeader>
                 <CardTitle>Formulario de Asignaturas</CardTitle>
                 <CardDescription>Ingrese los datos de la Asignatura</CardDescription>
@@ -259,7 +281,7 @@ export const FormAsignatura = () => {
                             name="curso"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Estado</FormLabel>
+                                    <FormLabel>Curso</FormLabel>
                                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                                         <FormControl>
                                             <SelectTrigger>

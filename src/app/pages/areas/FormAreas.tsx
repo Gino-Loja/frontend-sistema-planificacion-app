@@ -137,6 +137,7 @@ const FormAsignatura = () => {
 
     }, [storeData])
 
+
     function onSubmit(values: z.infer<typeof formSchema>) {
 
         setLoading(true);
@@ -157,6 +158,7 @@ const FormAsignatura = () => {
                     toast.error(e.response.data.detail)
                 })
         } else {
+            
            
             AxiosInstance.put(`/area/areas-profesor/update/${storeData?.id}`, values)
             .then(() => {

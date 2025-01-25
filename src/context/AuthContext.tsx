@@ -1,3 +1,4 @@
+import { REMOTE } from '@/config'
 import { AuthState, AuthStatus, User } from '@/types/auth.types'
 import { createContext, useContext, useState, useEffect, PropsWithChildren } from 'react'
 
@@ -16,9 +17,6 @@ interface TokenResponse {
 export const AuthContext = createContext<AuthContextType | null>(null)
 
 
-//const remote = "https://fastapi.fichafamiliarchambo.site/"
-const remote = "http://localhost:8000"
-
 export const AuthProvider = ({ children }: PropsWithChildren) => {
     const [auth, setAuth] = useState<AuthState>({
         status: 'checking',
@@ -26,7 +24,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     })
 
     useEffect(() => {
-      
         checkAuth()
     }, [])
 
@@ -42,7 +39,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         }
 
         try {
-            const response = await fetch(remote+'/auth/users/me/', {
+            const response = await fetch(REMOTE+'/auth/users/me/', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -58,7 +55,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
                 user: {
                     name: user.nombre,
                     email: user.email,
-                    role: user.rol
+                    role: user.rol,
+                    id: user.id
                 }
             })
         } catch (error) {
@@ -78,7 +76,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
             formData.append('password', password)
 
             // Get token
-            const tokenResponse = await fetch(remote+'/auth/token/', {
+            const tokenResponse = await fetch(REMOTE+'/auth/token/', {
                 method: 'POST',
                 body: formData
             })
@@ -93,7 +91,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
             localStorage.setItem('token', access_token)
 
             // Get user data
-            const userResponse = await fetch(remote+'/auth/users/me/', {
+            const userResponse = await fetch(REMOTE+'/auth/users/me/', {
                 headers: {
                     'Authorization': `Bearer ${access_token}`
                 }
@@ -111,7 +109,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
                 user: {
                     name: userData.nombre,
                     email: userData.email,
-                    role: userData.rol
+                    role: userData.rol,
+                    id: userData.id
                 }
             })
         } catch (error) {

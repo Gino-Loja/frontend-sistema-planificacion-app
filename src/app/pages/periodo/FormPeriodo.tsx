@@ -123,7 +123,7 @@ export const FormPeriodo = () => {
 
     return (
 
-        <Card className="mx-auto w-1/2">
+        <Card className="mx-auto w-min">
             <CardHeader>
                 <CardTitle>Formulario de Periodos</CardTitle>
                 <CardDescription>Ingrese los datos del periodo</CardDescription>
@@ -185,58 +185,36 @@ export const FormPeriodo = () => {
                             )}
                         />
 
-                        <FormLabel className="mt-2">Seleccione la duracion del periodo</FormLabel>
+                        <FormLabel className="mt-2 mb-2">Seleccione la duracion del periodo</FormLabel>
 
-                        <div className={cn("grid gap-2")}>
-                            <Popover>
-                                <PopoverTrigger asChild>
-                                    <Button
-                                        id="date"
-                                        variant={"outline"}
-                                        className={cn(
-                                            "w-[300px] justify-start text-left font-normal",
-                                            !date && "text-muted-foreground"
-                                        )}
-                                    >
-                                        <CalendarIcon />
-                                        {date?.from ? (
-                                            date.to ? (
-                                                <>
-                                                    {format(date.from, "LLL dd, y", { locale: es })} -{" "}
-                                                    {format(date.to, "LLL dd, y", { locale: es })}
-                                                </>
-                                            ) : (
-                                                format(date.from, "LLL dd, y", { locale: es })
-                                            )
-                                        ) : (
-                                            <span>Pick a date</span>
-                                        )}
-                                    </Button>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-auto p-0" align="start">
-                                    <Calendar
-                                        locale={es}
-                                        initialFocus
-                                        mode="range"
-                                        defaultMonth={date?.from}
-                                        selected={date}
-                                        onSelect={setDate}
-                                        numberOfMonths={2}
-                                    />
-                                </PopoverContent>
-                            </Popover>
+                        <div className={cn("grid gap-2 align-center")}>
+
+                            <Calendar
+                                locale={es}
+                                initialFocus
+                                mode="range"
+                                defaultMonth={date?.from}
+                                selected={date}
+                                onSelect={setDate}
+                                numberOfMonths={2}
+                            />
+
                         </div>
 
-                        <Button className="w-full" type="submit" disabled={loading}>
-                            {loading ? (
-                                <>
-                                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                                    Guardando...
-                                </>
-                            ) : (
-                                type === "create" ? 'Guardar' : 'Actualizar'
-                            )}
-                        </Button>
+
+                        <div className="flex justify-center">
+                            <Button className="min-w-72" type="submit" disabled={loading}>
+                                {loading ? (
+                                    <>
+                                        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                                        Guardando...
+                                    </>
+                                ) : (
+                                    type === "create" ? 'Guardar' : 'Actualizar'
+                                )}
+                            </Button>
+                        </div>
+
                     </form>
                 </Form>
 

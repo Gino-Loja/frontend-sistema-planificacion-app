@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/chart"
 import { getfetcher } from "@/api/axios"
 import useSWR from "swr"
+import { Skeleton } from "@/components/ui/skeleton"
 
 
 
@@ -36,7 +37,9 @@ export function BarcharProfesores() {
       return <div>Error al cargar los datos</div>;
   }
   if (isLoading) {
-      return <div>Cargando...</div>;
+      return <div>
+        <Skeleton className="h-[300px]" />
+      </div>;
   }
 
 
